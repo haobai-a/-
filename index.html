@@ -6,6 +6,18 @@
   <meta name="description" content="昊白的个人主页，欢迎来认识我。">
   <meta name="theme-color" content="#f7f9fc">
   <title>昊白 | 个人主页</title>
+  <link rel="icon" type="image/jpeg" href="avatar.jpg">
+  <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem("haobai-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+      } catch (error) {
+        document.documentElement.dataset.theme = "light";
+      }
+    })();
+  </script>
   <style>
     :root {
       --blue: #5b8def;
@@ -19,6 +31,19 @@
       --shadow: 0 16px 40px rgba(41, 67, 104, 0.09);
       --radius: 22px;
       --content: 1080px;
+    }
+
+    html[data-theme="dark"] {
+      --blue: #6f9ff5;
+      --blue-dark: #8bb5ff;
+      --blue-soft: #1b304f;
+      --ink: #e7edf7;
+      --muted: #9ca9bb;
+      --line: #2b394c;
+      --surface: #141d2a;
+      --canvas: #0f1722;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+      color-scheme: dark;
     }
 
     *,
@@ -103,6 +128,18 @@
       box-shadow: 0 8px 24px rgba(41, 67, 104, 0.04);
     }
 
+    .scroll-progress {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 80ms linear;
+    }
+
     .nav-wrap {
       width: min(calc(100% - 40px), var(--content));
       min-height: 72px;
@@ -123,17 +160,33 @@
       color: var(--ink);
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .brand-mark {
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       display: grid;
       place-items: center;
-      border-radius: 10px;
-      color: #fff;
-      background: var(--blue);
-      box-shadow: 0 8px 18px rgba(91, 141, 239, 0.22);
-      font-size: 13px;
-      letter-spacing: 0;
+      flex: 0 0 auto;
+      border-radius: 11px;
+      box-shadow: 0 8px 18px rgba(74, 144, 217, 0.24);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .brand:hover .brand-mark,
+    .brand:focus-visible .brand-mark {
+      box-shadow: 0 10px 22px rgba(74, 144, 217, 0.32);
+      transform: translateY(-1px) rotate(-2deg);
+    }
+
+    .brand-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .site-nav {
@@ -162,6 +215,89 @@
     .nav-link.active {
       color: var(--blue-dark);
       background: var(--blue-soft);
+    }
+
+    .theme-toggle {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: #637086;
+      background: rgba(255, 255, 255, 0.72);
+      cursor: pointer;
+      transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      color: var(--blue-dark);
+      border-color: rgba(91, 141, 239, 0.35);
+      background: var(--blue-soft);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .theme-toggle svg {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .theme-toggle .theme-icon-sun {
+      opacity: 0;
+      transform: rotate(-35deg) scale(0.72);
+    }
+
+    .theme-toggle .theme-icon-moon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    .header-avatar {
+      width: 40px;
+      height: 40px;
+      padding: 3px;
+      display: block;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 6px 18px rgba(58, 83, 121, 0.12);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .header-avatar:hover,
+    .header-avatar:focus-visible {
+      border-color: rgba(91, 141, 239, 0.5);
+      box-shadow: 0 8px 22px rgba(91, 141, 239, 0.2);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .header-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 47%;
+    }
+
+    html[data-theme="dark"] .theme-toggle .theme-icon-sun {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    html[data-theme="dark"] .theme-toggle .theme-icon-moon {
+      opacity: 0;
+      transform: rotate(35deg) scale(0.72);
     }
 
     main {
@@ -233,6 +369,26 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
+    }
+
+    .hero-tags {
+      margin: 24px 0 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .hero-tags li {
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #687589;
+      background: rgba(255, 255, 255, 0.62);
+      font-size: 12px;
+      font-weight: 650;
     }
 
     .button {
@@ -338,6 +494,7 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
+      object-position: center 47%;
       background: var(--blue-soft);
     }
 
@@ -418,6 +575,15 @@
       margin-top: 18px;
     }
 
+    .about-quote {
+      margin: 26px 0 0;
+      padding: 3px 0 3px 18px;
+      border-left: 3px solid var(--blue);
+      color: #49576b;
+      font-size: 16px;
+      font-weight: 650;
+    }
+
     .facts {
       margin: 0;
       padding: 0;
@@ -444,6 +610,353 @@
       font-size: 14px;
       font-weight: 700;
       text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .facts a {
+      color: var(--blue-dark);
+      transition: color 180ms ease;
+    }
+
+    .facts a:hover,
+    .facts a:focus-visible {
+      color: var(--ink);
+      outline: none;
+    }
+
+    .about-highlights {
+      margin-top: 62px;
+      padding-top: 38px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .highlight-item {
+      min-height: 150px;
+      padding: 0 30px;
+      border-right: 1px solid var(--line);
+    }
+
+    .highlight-item:first-child {
+      padding-left: 0;
+    }
+
+    .highlight-item:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    .highlight-number {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+    }
+
+    .highlight-item h3 {
+      margin: 0 0 9px;
+      color: #374254;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .highlight-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .now-band {
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .now-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(24px, 4vw, 48px);
+    }
+
+    .now-item {
+      padding-top: 26px;
+      border-top: 2px solid rgba(91, 141, 239, 0.22);
+    }
+
+    .now-icon {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 19px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: var(--blue-dark);
+      background: var(--blue-soft);
+    }
+
+    .now-icon svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .now-item h3 {
+      margin: 0 0 9px;
+      color: #374254;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .now-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .channel-band {
+      background: rgba(234, 242, 255, 0.26);
+    }
+
+    .channel-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 34px;
+    }
+
+    .channel-heading .section-heading {
+      min-width: 0;
+      margin-bottom: 0;
+    }
+
+    .channel-tabs {
+      padding: 5px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(78px, 1fr));
+      align-items: center;
+      gap: 4px;
+      width: min(100%, 286px);
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .channel-tab {
+      width: 100%;
+      min-height: 38px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .channel-tab:hover,
+    .channel-tab:focus-visible {
+      color: var(--blue-dark);
+      outline: none;
+    }
+
+    .channel-tab.active {
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 8px 18px rgba(91, 141, 239, 0.22);
+    }
+
+    .channel-panel {
+      display: none;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: clamp(40px, 7vw, 92px);
+      align-items: start;
+    }
+
+    .channel-panel.active {
+      display: grid;
+      animation: panel-in 320ms ease both;
+    }
+
+    .channel-summary h3 {
+      margin: 0 0 13px;
+      color: #334054;
+      font-size: clamp(24px, 3.2vw, 34px);
+      line-height: 1.35;
+      letter-spacing: -0.025em;
+    }
+
+    .channel-summary p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .channel-points {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .channel-points li {
+      position: relative;
+      padding: 17px 0 17px 47px;
+      border-bottom: 1px solid var(--line);
+      color: #566378;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .channel-points span {
+      position: absolute;
+      top: 18px;
+      left: 0;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.6;
+      letter-spacing: 0.08em;
+    }
+
+    @keyframes panel-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .focus-band {
+      background: rgba(234, 242, 255, 0.34);
+    }
+
+    .focus-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      align-items: end;
+      gap: 54px;
+      margin-bottom: 42px;
+    }
+
+    .focus-heading .section-heading {
+      margin-bottom: 0;
+    }
+
+    .focus-heading > p {
+      margin: 0 0 4px;
+      color: var(--muted);
+    }
+
+    .principles {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(24px, 4vw, 48px);
+      list-style: none;
+    }
+
+    .principle {
+      padding-top: 22px;
+      border-top: 2px solid rgba(91, 141, 239, 0.24);
+    }
+
+    .principle-index {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+    }
+
+    .principle h3 {
+      margin: 0 0 10px;
+      color: #354052;
+      font-size: 19px;
+      line-height: 1.4;
+    }
+
+    .principle p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .faq-list {
+      max-width: 880px;
+      border-top: 1px solid var(--line);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .faq-item summary {
+      position: relative;
+      padding: 22px 52px 22px 0;
+      color: #3b4759;
+      font-size: 16px;
+      font-weight: 720;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--blue-dark);
+      background: var(--blue-soft);
+      content: "+";
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1;
+      transform: translateY(-50%);
+      transition: transform 180ms ease;
+    }
+
+    .faq-item[open] summary::after {
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .faq-item summary:focus-visible {
+      color: var(--blue-dark);
+      outline: none;
+    }
+
+    .faq-answer {
+      padding: 0 52px 24px 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .faq-answer p {
+      margin: 0;
     }
 
     .contact-layout {
@@ -504,6 +1017,201 @@
       height: 20px;
     }
 
+    .email-contact {
+      margin-top: 48px;
+      padding: 26px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .email-meta {
+      min-width: 0;
+    }
+
+    .email-label {
+      display: block;
+      margin-bottom: 4px;
+      color: #8a94a4;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .email-address {
+      display: inline-block;
+      max-width: 100%;
+      color: #334054;
+      font-size: clamp(21px, 3.5vw, 34px);
+      line-height: 1.35;
+      font-weight: 760;
+      letter-spacing: -0.025em;
+      overflow-wrap: anywhere;
+      transition: color 180ms ease;
+    }
+
+    .email-address:hover,
+    .email-address:focus-visible {
+      color: var(--blue-dark);
+      outline: none;
+    }
+
+    .contact-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .copy-email,
+    .save-contact {
+      min-width: 134px;
+      min-height: 46px;
+      padding: 0 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: #526075;
+      background: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .copy-email:hover,
+    .copy-email:focus-visible,
+    .save-contact:hover,
+    .save-contact:focus-visible {
+      color: var(--blue-dark);
+      border-color: rgba(91, 141, 239, 0.36);
+      background: var(--blue-soft);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .copy-email svg,
+    .save-contact svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    body.dialog-open {
+      overflow: hidden;
+    }
+
+    .wechat-dialog {
+      width: min(calc(100% - 32px), 460px);
+      max-height: calc(100vh - 40px);
+      margin: auto;
+      padding: 0;
+      overflow: auto;
+      border: 0;
+      border-radius: 20px;
+      color: var(--ink);
+      background: #fff;
+      box-shadow: 0 28px 80px rgba(24, 42, 70, 0.24);
+    }
+
+    .wechat-dialog::backdrop {
+      background: rgba(31, 43, 61, 0.56);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .wechat-dialog[open] {
+      animation: dialog-in 220ms cubic-bezier(0.2, 0.75, 0.25, 1);
+    }
+
+    .dialog-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 15px 16px 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .dialog-title {
+      color: #334054;
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .dialog-close {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: #687589;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .dialog-close:hover,
+    .dialog-close:focus-visible {
+      color: var(--blue-dark);
+      background: var(--blue-soft);
+      border-color: rgba(91, 141, 239, 0.3);
+      outline: none;
+    }
+
+    .dialog-close svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .dialog-content {
+      padding: 22px 28px 28px;
+      text-align: center;
+    }
+
+    .wechat-qr {
+      width: min(100%, 330px);
+      height: auto;
+      margin: 0 auto;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(41, 67, 104, 0.11);
+    }
+
+    .dialog-content p {
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @keyframes dialog-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     .site-footer {
       padding: 24px 20px 30px;
       border-top: 1px solid var(--line);
@@ -512,6 +1220,17 @@
       text-align: center;
       font-size: 13px;
       letter-spacing: 0.08em;
+    }
+
+    .site-footer a {
+      color: #647187;
+      transition: color 180ms ease;
+    }
+
+    .site-footer a:hover,
+    .site-footer a:focus-visible {
+      color: var(--blue-dark);
+      outline: none;
     }
 
     .reveal {
@@ -525,10 +1244,50 @@
       transform: translateY(0);
     }
 
+    .back-to-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(91, 141, 239, 0.2);
+      border-radius: 14px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 12px 28px rgba(91, 141, 239, 0.26);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover,
+    .back-to-top:focus-visible {
+      background: var(--blue-dark);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+    }
+
     .toast {
       position: fixed;
       right: 20px;
-      bottom: 20px;
+      bottom: 84px;
       z-index: 80;
       max-width: calc(100% - 40px);
       padding: 12px 16px;
@@ -547,6 +1306,87 @@
     .toast.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    html[data-theme="dark"] body::before {
+      background-image: radial-gradient(circle, rgba(111, 159, 245, 0.14) 1px, transparent 1px);
+    }
+
+    html[data-theme="dark"] .site-header {
+      background: rgba(15, 23, 34, 0.84);
+    }
+
+    html[data-theme="dark"] .content-band {
+      background: rgba(20, 29, 42, 0.5);
+    }
+
+    html[data-theme="dark"] .now-band,
+    html[data-theme="dark"] .channel-band,
+    html[data-theme="dark"] .focus-band {
+      background: rgba(27, 48, 79, 0.16);
+    }
+
+    html[data-theme="dark"] .hero h1,
+    html[data-theme="dark"] .section-heading h2,
+    html[data-theme="dark"] .highlight-item h3,
+    html[data-theme="dark"] .now-item h3,
+    html[data-theme="dark"] .channel-summary h3,
+    html[data-theme="dark"] .principle h3,
+    html[data-theme="dark"] .faq-item summary,
+    html[data-theme="dark"] .contact-copy h2,
+    html[data-theme="dark"] .email-address,
+    html[data-theme="dark"] .dialog-title,
+    html[data-theme="dark"] .facts span:last-child,
+    html[data-theme="dark"] .status-card {
+      color: var(--ink);
+    }
+
+    html[data-theme="dark"] .hero-intro,
+    html[data-theme="dark"] .about-text,
+    html[data-theme="dark"] .about-quote,
+    html[data-theme="dark"] .channel-points li {
+      color: #c3cedd;
+    }
+
+    html[data-theme="dark"] .theme-toggle,
+    html[data-theme="dark"] .header-avatar,
+    html[data-theme="dark"] .button-secondary,
+    html[data-theme="dark"] .social-link,
+    html[data-theme="dark"] .copy-email,
+    html[data-theme="dark"] .save-contact,
+    html[data-theme="dark"] .channel-tabs,
+    html[data-theme="dark"] .dialog-close {
+      color: #c7d2e2;
+      background: rgba(20, 29, 42, 0.84);
+    }
+
+    html[data-theme="dark"] .channel-tab.active {
+      color: #fff;
+    }
+
+    html[data-theme="dark"] .status-card,
+    html[data-theme="dark"] .toast {
+      border-color: var(--line);
+      background: rgba(20, 29, 42, 0.96);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3);
+    }
+
+    html[data-theme="dark"] .wechat-dialog {
+      background: var(--surface);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    html[data-theme="dark"] .dialog-bar {
+      background: rgba(20, 29, 42, 0.95);
+    }
+
+    html[data-theme="dark"] .site-footer {
+      color: #8996a8;
+      background: rgba(15, 23, 34, 0.86);
+    }
+
+    html[data-theme="dark"] .site-footer a {
+      color: #b5c0d0;
     }
 
     @media (max-width: 820px) {
@@ -585,9 +1425,57 @@
         grid-template-columns: 1fr;
       }
 
+      .about-highlights,
+      .principles,
+      .now-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .highlight-item,
+      .highlight-item:first-child,
+      .highlight-item:last-child {
+        min-height: auto;
+        padding: 24px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .highlight-item:last-child {
+        border-bottom: 0;
+      }
+
+      .focus-heading {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .channel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .channel-tabs {
+        width: min(100%, 360px);
+      }
+
+      .channel-panel {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
       .contact-layout {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .email-contact {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .contact-actions {
+        width: 100%;
       }
     }
 
@@ -599,12 +1487,31 @@
       }
 
       .brand {
+        gap: 0;
         font-size: 13px;
       }
 
+      .brand-name {
+        display: none;
+      }
+
       .brand-mark {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
+      }
+
+      .header-actions {
+        gap: 6px;
+      }
+
+      .theme-toggle {
+        width: 38px;
+        height: 38px;
+      }
+
+      .header-avatar {
+        width: 38px;
+        height: 38px;
       }
 
       .site-nav {
@@ -612,7 +1519,7 @@
       }
 
       .nav-link {
-        padding: 8px 9px;
+        padding: 8px 8px;
         font-size: 13px;
       }
 
@@ -635,6 +1542,10 @@
       .hero-actions {
         align-items: stretch;
         flex-direction: column;
+      }
+
+      .hero-tags {
+        justify-content: center;
       }
 
       .button {
@@ -666,10 +1577,40 @@
         flex: 1;
       }
 
+      .email-contact {
+        margin-top: 38px;
+      }
+
+      .contact-actions {
+        flex-direction: column;
+      }
+
+      .copy-email,
+      .save-contact {
+        width: 100%;
+      }
+
+      .channel-tabs {
+        width: 100%;
+      }
+
+      .channel-tab {
+        padding: 0 8px;
+      }
+
+      .dialog-content {
+        padding: 16px 18px 22px;
+      }
+
       .toast {
         right: 16px;
-        bottom: 16px;
+        bottom: 76px;
         max-width: calc(100% - 32px);
+      }
+
+      .back-to-top {
+        right: 16px;
+        bottom: 16px;
       }
     }
 
@@ -691,6 +1632,10 @@
         opacity: 1;
         transform: none;
       }
+
+      .wechat-dialog[open] {
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -700,16 +1645,63 @@
   <header class="site-header" id="site-header">
     <div class="nav-wrap">
       <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-mark" aria-hidden="true">H</span>
-        HAOBAI
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="haobai-logo-blue" x1="7" y1="5" x2="36" y2="40"
+                gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#72ADF7"></stop>
+                <stop offset="1" stop-color="#3F7ECB"></stop>
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="42" height="42" rx="13"
+              fill="url(#haobai-logo-blue)" stroke="#fff" stroke-opacity=".3"></rect>
+            <circle cx="22" cy="9" r="3.1" fill="#fff"></circle>
+            <path d="M14.1 15.1c-.7 5-.6 10.3.3 15.7M29.9 15.1c.7 5 .6 10.3-.3 15.7"
+              fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"></path>
+            <path d="M14 22.8h16" fill="none" stroke="#fff" stroke-width="3.2"
+              stroke-linecap="round"></path>
+            <path d="M18.2 28h7.6" fill="none" stroke="#C9DFFF" stroke-width="1.7"
+              stroke-linecap="round"></path>
+            <circle cx="33.2" cy="9.6" r="1.2" fill="#fff" fill-opacity=".72"></circle>
+          </svg>
+        </span>
+        <span class="brand-name">HAOBAI</span>
       </a>
 
-      <nav class="site-nav" aria-label="主导航">
-        <a class="nav-link active" href="#home">首页</a>
-        <a class="nav-link" href="#about">关于我</a>
-        <a class="nav-link" href="#contact">联系我</a>
-      </nav>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="主导航">
+          <a class="nav-link active" href="#home">首页</a>
+          <a class="nav-link" href="#about">关于我</a>
+          <a class="nav-link" href="#contact">联系我</a>
+        </nav>
+
+        <button class="theme-toggle" id="theme-toggle" type="button"
+          aria-label="切换为深色模式" title="切换为深色模式">
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.42 1.42"></path>
+            <path d="m17.65 17.65 1.42 1.42"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.35 17.65-1.42 1.42"></path>
+            <path d="m19.07 4.93-1.42 1.42"></path>
+          </svg>
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+
+        <a class="header-avatar" href="#home" aria-label="返回首页">
+          <img src="avatar.jpg" alt="" width="1080" height="1080">
+        </a>
+      </div>
     </div>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   </header>
 
   <main id="main-content">
@@ -722,7 +1714,7 @@
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#about">
-            认识一下
+            更了解我
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 12h14"></path>
@@ -738,16 +1730,22 @@
             </svg>
           </a>
         </div>
+        <ul class="hero-tags" aria-label="个人关键词">
+          <li>保持好奇</li>
+          <li>乐于协作</li>
+          <li>喜欢分享</li>
+          <li>认真生活</li>
+        </ul>
       </div>
 
       <div class="hero-visual reveal">
         <div class="portrait-frame">
           <img
             class="portrait"
-            src="https://placehold.co/480x480/eaf2ff/5b8def?text=HAOBAI"
-            alt="昊白的头像占位图"
-            width="480"
-            height="480"
+            src="avatar.jpg"
+            alt="昊白的头像"
+            width="1080"
+            height="1080"
           >
         </div>
         <div class="status-card" aria-label="当前状态：保持热爱，认真生活">
@@ -772,6 +1770,10 @@
             <p class="about-text">
               我待人真诚，乐于沟通与合作，遇到问题时愿意主动思考并寻找解决办法。工作之外，我热爱探索、记录和分享，希望用自己的方式传递一点轻松、一点温暖，也认识更多志同道合的朋友。
             </p>
+            <p class="about-text">
+              对我来说，成长不只是不断获得新的答案，也包括在每一次尝试中更了解自己。我愿意接触不同领域、倾听不同观点，也期待和更多有趣的人一起，把脑海里的灵感变成值得纪念的经历。
+            </p>
+            <p class="about-quote">保持真诚，保持好奇，也保持向前走的勇气。</p>
           </div>
 
           <ul class="facts reveal" aria-label="个人信息概览">
@@ -791,7 +1793,203 @@
               <span>坐标</span>
               <span>China</span>
             </li>
+            <li>
+              <span>邮箱</span>
+              <span><a href="mailto:2506442010@qq.com">2506442010@qq.com</a></span>
+            </li>
           </ul>
+        </div>
+
+        <div class="about-highlights">
+          <article class="highlight-item reveal">
+            <span class="highlight-number">01</span>
+            <h3>开放与真诚</h3>
+            <p>重视真实、清晰的沟通，愿意倾听不同声音，也乐于分享自己的想法和经验。</p>
+          </article>
+          <article class="highlight-item reveal">
+            <span class="highlight-number">02</span>
+            <h3>学习与行动</h3>
+            <p>对未知保持兴趣，不只停留在想象里，更愿意通过实践验证想法、积累经验。</p>
+          </article>
+          <article class="highlight-item reveal">
+            <span class="highlight-number">03</span>
+            <h3>协作与共创</h3>
+            <p>相信好的结果来自彼此成就，期待与伙伴一起把有价值的事情做得更完整。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band now-band" aria-labelledby="now-title">
+      <div class="section">
+        <div class="section-heading reveal">
+          <span class="section-kicker">Now</span>
+          <h2 id="now-title">此刻的我，正在这些事情里保持生长</h2>
+        </div>
+
+        <div class="now-grid">
+          <article class="now-item reveal">
+            <span class="now-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </span>
+            <h3>保持输入</h3>
+            <p>继续阅读、观察和体验，从日常生活与不同领域里收集新的灵感，让自己始终拥有新的视角。</p>
+          </article>
+          <article class="now-item reveal">
+            <span class="now-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+              </svg>
+            </span>
+            <h3>认真输出</h3>
+            <p>把零散的想法整理成文字、页面或一次次具体行动，让灵感不只停留在脑海里，而被真正看见。</p>
+          </article>
+          <article class="now-item reveal">
+            <span class="now-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
+            <h3>期待连接</h3>
+            <p>欢迎新的交流与合作，也期待遇见认真、有趣、愿意一起把事情做好的伙伴。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band channel-band" aria-labelledby="channel-title">
+      <div class="section">
+        <div class="channel-heading">
+          <div class="section-heading reveal">
+            <span class="section-kicker">My Channels</span>
+            <h2 id="channel-title">我的频道，不只有一面</h2>
+          </div>
+
+          <div class="channel-tabs reveal" role="tablist" aria-label="个人频道">
+            <button class="channel-tab active" id="channel-tab-explore" type="button" role="tab"
+              aria-selected="true" aria-controls="channel-explore" tabindex="0">探索</button>
+            <button class="channel-tab" id="channel-tab-create" type="button" role="tab"
+              aria-selected="false" aria-controls="channel-create" tabindex="-1">创作</button>
+            <button class="channel-tab" id="channel-tab-life" type="button" role="tab"
+              aria-selected="false" aria-controls="channel-life" tabindex="-1">生活</button>
+          </div>
+        </div>
+
+        <div class="channel-panel active" id="channel-explore" role="tabpanel"
+          aria-labelledby="channel-tab-explore">
+          <div class="channel-summary">
+            <h3>去理解更辽阔的世界</h3>
+            <p>保持对未知的兴趣，通过学习、观察和真实体验，让自己拥有更开放的判断和更丰富的感受。</p>
+          </div>
+          <ul class="channel-points">
+            <li><span>01</span><strong>阅读与观察：</strong>从书籍、内容和日常细节里发现新问题。</li>
+            <li><span>02</span><strong>尝试与验证：</strong>用行动验证想法，在实践中更新认知。</li>
+            <li><span>03</span><strong>整理与分享：</strong>把收获沉淀下来，也把有用的经验分享出去。</li>
+          </ul>
+        </div>
+
+        <div class="channel-panel" id="channel-create" role="tabpanel"
+          aria-labelledby="channel-tab-create" hidden>
+          <div class="channel-summary">
+            <h3>把灵感变成看得见的东西</h3>
+            <p>喜欢从零开始构思，也享受打磨细节的过程。文字、页面、影像和一次用心的表达，都是创作的一部分。</p>
+          </div>
+          <ul class="channel-points">
+            <li><span>01</span><strong>捕捉灵感：</strong>记录偶然出现的念头，不让好想法轻易溜走。</li>
+            <li><span>02</span><strong>梳理结构：</strong>把模糊的感受变成清晰、有逻辑的表达。</li>
+            <li><span>03</span><strong>持续打磨：</strong>关注细节，也接受作品在迭代中慢慢成熟。</li>
+          </ul>
+        </div>
+
+        <div class="channel-panel" id="channel-life" role="tabpanel"
+          aria-labelledby="channel-tab-life" hidden>
+          <div class="channel-summary">
+            <h3>认真感受每一个普通日子</h3>
+            <p>生活是很多创作灵感的来源。希望自己既能在忙碌里保持节奏，也能在平常中发现值得记住的瞬间。</p>
+          </div>
+          <ul class="channel-points">
+            <li><span>01</span><strong>保持节奏：</strong>规律生活，给身体和情绪留出恢复的空间。</li>
+            <li><span>02</span><strong>记录日常：</strong>用简单的文字或照片，留住微小而真实的感受。</li>
+            <li><span>03</span><strong>珍惜连接：</strong>认真对待每一次相遇、交流与陪伴。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band focus-band" aria-labelledby="focus-title">
+      <div class="section">
+        <div class="focus-heading">
+          <div class="section-heading reveal">
+            <span class="section-kicker">How I Work</span>
+            <h2 id="focus-title">我更喜欢这样面对每一件事</h2>
+          </div>
+          <p class="reveal">
+            不急于给一切下定义，先理解问题，再寻找路径；在合作中尊重彼此，在过程中持续复盘，把每一步走得更扎实。
+          </p>
+        </div>
+
+        <ol class="principles">
+          <li class="principle reveal">
+            <span class="principle-index">FOCUS 01</span>
+            <h3>理解在前</h3>
+            <p>先听清楚需求与感受，弄清楚真正的问题，再开始行动，让沟通更高效、结果更准确。</p>
+          </li>
+          <li class="principle reveal">
+            <span class="principle-index">FOCUS 02</span>
+            <h3>持续迭代</h3>
+            <p>接受不完美，也相信改进的力量。通过一次次实践和小步调整，让想法逐渐变得可靠。</p>
+          </li>
+          <li class="principle reveal">
+            <span class="principle-index">FOCUS 03</span>
+            <h3>彼此成就</h3>
+            <p>尊重伙伴的节奏与价值，愿意补位、分享和承担，让团队合作成为彼此成长的放大器。</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="content-band" aria-labelledby="faq-title">
+      <div class="section">
+        <div class="section-heading reveal">
+          <span class="section-kicker">FAQ</span>
+          <h2 id="faq-title">也许你还想了解</h2>
+        </div>
+
+        <div class="faq-list reveal">
+          <details class="faq-item">
+            <summary>可以通过这里了解完整的我吗？</summary>
+            <div class="faq-answer">
+              <p>这个页面更像一张持续更新的个人名片，用来介绍我的性格、想法和关注方向。更具体的经历与合作细节，欢迎通过邮件或微信继续交流。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>欢迎交流或合作吗？</summary>
+            <div class="faq-answer">
+              <p>欢迎。无论是交换想法、分享生活中的有趣发现，还是讨论有共同兴趣的合作方向，都可以先把简单想法发到我的邮箱。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>怎样联系我会比较方便？</summary>
+            <div class="faq-answer">
+              <p>邮件适合较长、需要整理的内容；如果只是想快速认识，可以点击微信图标扫码添加。两种方式我都会认真查看。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>这个网站之后还会更新吗？</summary>
+            <div class="faq-answer">
+              <p>会继续更新。随着新的经历、灵感和想法出现，我会慢慢丰富这里的内容，让它更接近真实、持续成长的自己。</p>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -802,7 +2000,7 @@
           <div class="contact-copy reveal">
             <span class="section-kicker">Get In Touch</span>
             <h2 id="contact-title">很高兴在这里遇见你</h2>
-            <p>欢迎通过下面任意方式找到我，一起聊聊有趣的创意与生活。</p>
+            <p>欢迎通过邮箱找到我。无论是交流想法、分享生活，还是讨论一次有趣的合作，我都很期待收到你的来信。</p>
           </div>
 
           <div class="socials reveal" aria-label="社交账号">
@@ -813,7 +2011,8 @@
                 <path d="M8 19c-3 .9-3-1.5-4.2-2"></path>
               </svg>
             </a>
-            <a class="social-link" href="#" aria-label="添加我的微信" title="微信">
+            <a class="social-link" href="wechat-qr.jpg" data-wechat-open
+              aria-label="查看我的微信二维码" title="微信">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"></path>
@@ -821,7 +2020,7 @@
                 <path d="M16 12h.01"></path>
               </svg>
             </a>
-            <a class="social-link" href="#" aria-label="给昊白发送邮件" title="邮箱">
+            <a class="social-link" href="mailto:2506442010@qq.com" aria-label="给昊白发送邮件" title="邮箱">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect width="20" height="16" x="2" y="4" rx="2"></rect>
@@ -830,15 +2029,73 @@
             </a>
           </div>
         </div>
+
+        <div class="email-contact reveal">
+          <div class="email-meta">
+            <span class="email-label">Email Me</span>
+            <a class="email-address" href="mailto:2506442010@qq.com">2506442010@qq.com</a>
+          </div>
+          <div class="contact-actions">
+            <button class="copy-email" type="button" data-copy="2506442010@qq.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="14" height="14" x="8" y="8" rx="2"></rect>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+              </svg>
+              复制邮箱
+            </button>
+            <button class="save-contact" type="button" data-save-contact>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"></path>
+                <path d="M17 21v-8H7v8"></path>
+                <path d="M7 3v5h8"></path>
+              </svg>
+              保存联系人
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <span>&copy; 2026 HAOBAI</span>
+    <span>&copy; 2026 HAOBAI &middot; <a href="mailto:2506442010@qq.com">2506442010@qq.com</a></span>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="返回页面顶部"
+    title="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6"></path>
+    </svg>
+  </button>
+
+  <dialog class="wechat-dialog" id="wechat-dialog" aria-labelledby="wechat-dialog-title">
+    <div class="dialog-bar">
+      <span class="dialog-title" id="wechat-dialog-title">我的微信二维码</span>
+      <button class="dialog-close" type="button" data-wechat-close aria-label="关闭微信二维码">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="dialog-content">
+      <img
+        class="wechat-qr"
+        src="wechat-qr.jpg"
+        alt="昊白的微信二维码"
+        width="924"
+        height="1390"
+        loading="lazy"
+      >
+      <p>打开微信扫一扫，添加我为朋友。</p>
+    </div>
+  </dialog>
 
   <script>
     (() => {
@@ -849,14 +2106,64 @@
         .filter(Boolean);
       const revealItems = document.querySelectorAll(".reveal");
       const toast = document.querySelector("#toast");
+      const root = document.documentElement;
+      const themeToggle = document.querySelector("#theme-toggle");
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      const progressBar = document.querySelector("#scroll-progress");
+      const backToTop = document.querySelector("#back-to-top");
       let toastTimer;
 
-      const updateHeader = () => {
-        header.classList.toggle("scrolled", window.scrollY > 12);
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2200);
       };
 
-      updateHeader();
-      window.addEventListener("scroll", updateHeader, { passive: true });
+      const syncThemeToggle = () => {
+        const isDark = root.dataset.theme === "dark";
+        const nextLabel = isDark ? "切换为浅色模式" : "切换为深色模式";
+        themeToggle.setAttribute("aria-label", nextLabel);
+        themeToggle.setAttribute("title", nextLabel);
+        themeColorMeta.setAttribute("content", isDark ? "#0f1722" : "#f7f9fc");
+      };
+
+      syncThemeToggle();
+
+      themeToggle.addEventListener("click", () => {
+        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = nextTheme;
+
+        try {
+          localStorage.setItem("haobai-theme", nextTheme);
+        } catch (error) {
+          // Theme switching still works when browser storage is unavailable.
+        }
+
+        syncThemeToggle();
+        showToast(nextTheme === "dark" ? "已切换到深色模式" : "已切换到浅色模式");
+      });
+
+      const updateScrollUi = () => {
+        const scrollableHeight = root.scrollHeight - window.innerHeight;
+        const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+
+        header.classList.toggle("scrolled", window.scrollY > 12);
+        progressBar.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+        backToTop.classList.toggle("show", window.scrollY > 560);
+      };
+
+      updateScrollUi();
+      window.addEventListener("scroll", updateScrollUi, { passive: true });
+      window.addEventListener("resize", updateScrollUi);
+
+      backToTop.addEventListener("click", () => {
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({
+          top: 0,
+          behavior: reduceMotion ? "auto" : "smooth"
+        });
+      });
 
       const observer = new IntersectionObserver(
         (entries) => {
@@ -899,18 +2206,141 @@
         revealItems.forEach((item) => item.classList.add("visible"));
       }
 
+      const channelTabs = [...document.querySelectorAll(".channel-tab")];
+      const channelPanels = [...document.querySelectorAll(".channel-panel")];
+
+      const activateChannel = (activeTab, shouldFocus = false) => {
+        channelTabs.forEach((tab) => {
+          const isActive = tab === activeTab;
+          tab.classList.toggle("active", isActive);
+          tab.setAttribute("aria-selected", String(isActive));
+          tab.tabIndex = isActive ? 0 : -1;
+        });
+
+        channelPanels.forEach((panel) => {
+          const isActive = panel.id === activeTab.getAttribute("aria-controls");
+          panel.classList.toggle("active", isActive);
+          panel.hidden = !isActive;
+        });
+
+        if (shouldFocus) activeTab.focus();
+      };
+
+      channelTabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => activateChannel(tab));
+        tab.addEventListener("keydown", (event) => {
+          const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+          if (!keys.includes(event.key)) return;
+
+          event.preventDefault();
+          let nextIndex = index;
+
+          if (event.key === "ArrowLeft") nextIndex = (index - 1 + channelTabs.length) % channelTabs.length;
+          if (event.key === "ArrowRight") nextIndex = (index + 1) % channelTabs.length;
+          if (event.key === "Home") nextIndex = 0;
+          if (event.key === "End") nextIndex = channelTabs.length - 1;
+
+          activateChannel(channelTabs[nextIndex], true);
+        });
+      });
+
+      const wechatDialog = document.querySelector("#wechat-dialog");
+      const wechatOpen = document.querySelector("[data-wechat-open]");
+      const wechatClose = document.querySelector("[data-wechat-close]");
+
+      if (wechatDialog && wechatOpen && wechatClose) {
+        const closeWechatDialog = () => {
+          wechatDialog.close();
+          document.body.classList.remove("dialog-open");
+        };
+
+        wechatOpen.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          if (typeof wechatDialog.showModal === "function") {
+            wechatDialog.showModal();
+            document.body.classList.add("dialog-open");
+          } else {
+            window.location.href = wechatOpen.getAttribute("href");
+          }
+        });
+
+        wechatClose.addEventListener("click", closeWechatDialog);
+
+        wechatDialog.addEventListener("click", (event) => {
+          if (event.target === wechatDialog) {
+            closeWechatDialog();
+          }
+        });
+
+        wechatDialog.addEventListener("close", () => {
+          document.body.classList.remove("dialog-open");
+        });
+      }
+
       document.querySelectorAll(".social-link").forEach((link) => {
         link.addEventListener("click", (event) => {
           if (link.getAttribute("href") !== "#") return;
 
           event.preventDefault();
           const name = link.getAttribute("aria-label").replace(/^访问我的|^添加我的|^给昊白发送/, "");
-          toast.textContent = `${name}链接暂未设置，可在 HTML 中替换 #`;
-          toast.classList.add("show");
-          window.clearTimeout(toastTimer);
-          toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+          showToast(`${name}链接暂未设置，可在 HTML 中替换 #`);
         });
       });
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const text = button.getAttribute("data-copy");
+
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(text);
+            } else {
+              const temporaryInput = document.createElement("textarea");
+              temporaryInput.value = text;
+              temporaryInput.setAttribute("readonly", "");
+              temporaryInput.style.position = "fixed";
+              temporaryInput.style.opacity = "0";
+              document.body.appendChild(temporaryInput);
+              temporaryInput.select();
+              const copied = document.execCommand("copy");
+              temporaryInput.remove();
+              if (!copied) throw new Error("Copy failed");
+            }
+
+            showToast("邮箱已复制，期待与你联系");
+          } catch (error) {
+            showToast("复制失败，请手动选择邮箱地址");
+          }
+        });
+      });
+
+      const saveContact = document.querySelector("[data-save-contact]");
+
+      if (saveContact) {
+        saveContact.addEventListener("click", () => {
+          const vCard = [
+            "BEGIN:VCARD",
+            "VERSION:3.0",
+            "FN:昊白",
+            "N:昊白;;;;",
+            "NICKNAME:HAOBAI",
+            "EMAIL;TYPE=INTERNET:2506442010@qq.com",
+            "END:VCARD"
+          ].join("\r\n");
+          const blob = new Blob(["\ufeff", vCard], { type: "text/vcard;charset=utf-8" });
+          const fileUrl = URL.createObjectURL(blob);
+          const downloadLink = document.createElement("a");
+
+          downloadLink.href = fileUrl;
+          downloadLink.download = "haobai-contact.vcf";
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          downloadLink.remove();
+          window.setTimeout(() => URL.revokeObjectURL(fileUrl), 0);
+          showToast("联系人名片已生成");
+        });
+      }
     })();
   </script>
 </body>
