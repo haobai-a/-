@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="昊白的个人主页，欢迎来认识我。">
+  <meta name="theme-color" content="#f7f9fc">
+  <title>昊白 | 个人主页</title>
+  <style>
+    :root {
+      --blue: #5b8def;
+      --blue-dark: #3f74d6;
+      --blue-soft: #eaf2ff;
+      --ink: #2f3745;
+      --muted: #6f7b8d;
+      --line: #e6ebf2;
+      --surface: #ffffff;
+      --canvas: #f7f9fc;
+      --shadow: 0 16px 40px rgba(41, 67, 104, 0.09);
+      --radius: 22px;
+      --content: 1080px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--canvas);
+      font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      content: "";
+      background-image: radial-gradient(circle, rgba(91, 141, 239, 0.11) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 62%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 62%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 16px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue-dark);
+      transform: translateY(-150%);
+      transition: transform 180ms ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid transparent;
+      background: rgba(247, 249, 252, 0.83);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .site-header.scrolled {
+      border-color: var(--line);
+      box-shadow: 0 8px 24px rgba(41, 67, 104, 0.04);
+    }
+
+    .nav-wrap {
+      width: min(calc(100% - 40px), var(--content));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 8px 18px rgba(91, 141, 239, 0.22);
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 9px 14px;
+      border-radius: 11px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      transition: color 180ms ease, background-color 180ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--blue-dark);
+      background: rgba(91, 141, 239, 0.08);
+      outline: none;
+    }
+
+    .nav-link.active {
+      color: var(--blue-dark);
+      background: var(--blue-soft);
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .section {
+      width: min(calc(100% - 40px), var(--content));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      padding: 88px 0 74px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      align-items: center;
+      gap: clamp(50px, 8vw, 108px);
+    }
+
+    .hero-copy {
+      max-width: 650px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--blue-dark);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 22px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--blue);
+      content: "";
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(52px, 8vw, 88px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      font-weight: 800;
+      color: #27303d;
+    }
+
+    .hero h1 span {
+      color: var(--blue);
+    }
+
+    .hero-intro {
+      max-width: 580px;
+      margin: 22px 0 0;
+      color: #596577;
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      min-height: 46px;
+      padding: 0 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, color 180ms ease,
+        background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button:focus-visible {
+      outline: 3px solid rgba(91, 141, 239, 0.25);
+      outline-offset: 2px;
+    }
+
+    .button-primary {
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 10px 24px rgba(91, 141, 239, 0.24);
+    }
+
+    .button-primary:hover {
+      background: var(--blue-dark);
+      box-shadow: 0 13px 28px rgba(91, 141, 239, 0.3);
+    }
+
+    .button-secondary {
+      color: #445064;
+      background: rgba(255, 255, 255, 0.74);
+      border-color: var(--line);
+    }
+
+    .button-secondary:hover {
+      color: var(--blue-dark);
+      border-color: rgba(91, 141, 239, 0.36);
+      background: #fff;
+    }
+
+    .button svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+    }
+
+    .hero-visual {
+      position: relative;
+      justify-self: center;
+      width: min(100%, 390px);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .portrait-frame {
+      position: relative;
+      width: 78%;
+      aspect-ratio: 1 / 1;
+      padding: 10px;
+      border: 1px solid rgba(91, 141, 239, 0.22);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+    }
+
+    .portrait-frame::before,
+    .portrait-frame::after {
+      position: absolute;
+      border-radius: 50%;
+      content: "";
+    }
+
+    .portrait-frame::before {
+      inset: -28px;
+      z-index: -1;
+      border: 1px dashed rgba(91, 141, 239, 0.28);
+    }
+
+    .portrait-frame::after {
+      top: 7px;
+      right: 7px;
+      width: 20px;
+      height: 20px;
+      border: 5px solid var(--canvas);
+      background: var(--blue);
+      box-shadow: 0 0 0 1px rgba(91, 141, 239, 0.18);
+    }
+
+    .portrait {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--blue-soft);
+    }
+
+    .status-card {
+      position: absolute;
+      right: -4px;
+      bottom: 10%;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(230, 235, 242, 0.9);
+      border-radius: 14px;
+      color: #485568;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 30px rgba(41, 67, 104, 0.1);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ec58c;
+      box-shadow: 0 0 0 5px rgba(78, 197, 140, 0.12);
+    }
+
+    .content-band {
+      padding: 94px 0;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .contact-band {
+      background: transparent;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin-bottom: 42px;
+    }
+
+    .section-kicker {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      color: #2c3542;
+      font-size: clamp(29px, 4vw, 42px);
+      line-height: 1.25;
+      letter-spacing: -0.035em;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr);
+      gap: clamp(34px, 6vw, 78px);
+      align-items: start;
+    }
+
+    .about-text {
+      margin: 0;
+      color: #596577;
+      font-size: 17px;
+      line-height: 2;
+    }
+
+    .about-text + .about-text {
+      margin-top: 18px;
+    }
+
+    .facts {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .facts li {
+      padding: 15px 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .facts span:first-child {
+      color: #8a94a4;
+      font-size: 13px;
+    }
+
+    .facts span:last-child {
+      color: #465267;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .contact-layout {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .contact-copy {
+      max-width: 620px;
+    }
+
+    .contact-copy h2 {
+      margin: 0 0 12px;
+      color: #2c3542;
+      font-size: clamp(30px, 4.8vw, 48px);
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+    }
+
+    .contact-copy p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .socials {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .social-link {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: #596678;
+      background: rgba(255, 255, 255, 0.82);
+      transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease,
+        transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .social-link:hover,
+    .social-link:focus-visible {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+      box-shadow: 0 10px 22px rgba(91, 141, 239, 0.22);
+      transform: translateY(-3px);
+      outline: none;
+    }
+
+    .social-link svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .site-footer {
+      padding: 24px 20px 30px;
+      border-top: 1px solid var(--line);
+      color: #8a94a4;
+      background: rgba(247, 249, 252, 0.86);
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.75, 0.25, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 80;
+      max-width: calc(100% - 40px);
+      padding: 12px 16px;
+      border: 1px solid rgba(91, 141, 239, 0.18);
+      border-radius: 12px;
+      color: #425066;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 14px 34px rgba(41, 67, 104, 0.14);
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 820px) {
+      .hero {
+        min-height: auto;
+        padding: 62px 0 76px;
+        grid-template-columns: 1fr;
+        gap: 54px;
+      }
+
+      .hero-copy {
+        order: 2;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        justify-content: center;
+      }
+
+      .hero-intro {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        order: 1;
+        width: min(76vw, 330px);
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-layout {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav-wrap {
+        width: min(calc(100% - 28px), var(--content));
+        min-height: 66px;
+        gap: 14px;
+      }
+
+      .brand {
+        font-size: 13px;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+      }
+
+      .site-nav {
+        gap: 2px;
+      }
+
+      .nav-link {
+        padding: 8px 9px;
+        font-size: 13px;
+      }
+
+      .section {
+        width: min(calc(100% - 32px), var(--content));
+      }
+
+      .hero {
+        padding-top: 46px;
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 17vw, 68px);
+      }
+
+      .hero-intro {
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .portrait-frame::before {
+        inset: -20px;
+      }
+
+      .status-card {
+        right: -10px;
+        bottom: 5%;
+      }
+
+      .content-band {
+        padding: 72px 0;
+      }
+
+      .about-text {
+        font-size: 16px;
+      }
+
+      .socials {
+        width: 100%;
+      }
+
+      .social-link {
+        flex: 1;
+      }
+
+      .toast {
+        right: 16px;
+        bottom: 16px;
+        max-width: calc(100% - 32px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="site-header" id="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true">H</span>
+        HAOBAI
+      </a>
+
+      <nav class="site-nav" aria-label="主导航">
+        <a class="nav-link active" href="#home">首页</a>
+        <a class="nav-link" href="#about">关于我</a>
+        <a class="nav-link" href="#contact">联系我</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="section hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Hello, I am HAOBAI</p>
+        <h1 id="hero-title">我是<span>昊白</span></h1>
+        <p class="hero-intro">
+          嗨嗨，这里是有趣的 HAOBAI 频道！一起玩耍吧~
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#about">
+            认识一下
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </a>
+          <a class="button button-secondary" href="#contact">
+            联系我
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="portrait-frame">
+          <img
+            class="portrait"
+            src="https://placehold.co/480x480/eaf2ff/5b8def?text=HAOBAI"
+            alt="昊白的头像占位图"
+            width="480"
+            height="480"
+          >
+        </div>
+        <div class="status-card" aria-label="当前状态：保持热爱，认真生活">
+          <span class="status-dot" aria-hidden="true"></span>
+          保持热爱，认真生活
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band" id="about" aria-labelledby="about-title">
+      <div class="section">
+        <div class="section-heading reveal">
+          <span class="section-kicker">About Me</span>
+          <h2 id="about-title">认真生活的人，总能遇见有趣的世界</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="reveal">
+            <p class="about-text">
+              你好，我是昊白。一个对新鲜事物保持好奇心、对生活保持热情的人。我喜欢在学习和实践中不断拓宽自己的边界，也享受把想法一步步变成真实成果的过程。
+            </p>
+            <p class="about-text">
+              我待人真诚，乐于沟通与合作，遇到问题时愿意主动思考并寻找解决办法。工作之外，我热爱探索、记录和分享，希望用自己的方式传递一点轻松、一点温暖，也认识更多志同道合的朋友。
+            </p>
+          </div>
+
+          <ul class="facts reveal" aria-label="个人信息概览">
+            <li>
+              <span>昵称</span>
+              <span>昊白 / HAOBAI</span>
+            </li>
+            <li>
+              <span>性格</span>
+              <span>真诚、好奇、乐观</span>
+            </li>
+            <li>
+              <span>喜欢</span>
+              <span>探索新鲜事物</span>
+            </li>
+            <li>
+              <span>坐标</span>
+              <span>China</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-band contact-band" id="contact" aria-labelledby="contact-title">
+      <div class="section">
+        <div class="contact-layout">
+          <div class="contact-copy reveal">
+            <span class="section-kicker">Get In Touch</span>
+            <h2 id="contact-title">很高兴在这里遇见你</h2>
+            <p>欢迎通过下面任意方式找到我，一起聊聊有趣的创意与生活。</p>
+          </div>
+
+          <div class="socials reveal" aria-label="社交账号">
+            <a class="social-link" href="#" aria-label="访问我的 GitHub" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.5 5.5 0 0 0 19.3 3.7 5.1 5.1 0 0 0 19.1.2S17.9-.2 15 1.7a13.4 13.4 0 0 0-7 0C5.1-.2 3.9.2 3.9.2a5.1 5.1 0 0 0-.2 3.5A5.5 5.5 0 0 0 2.2 7.5c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4"></path>
+                <path d="M8 19c-3 .9-3-1.5-4.2-2"></path>
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="添加我的微信" title="微信">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"></path>
+                <path d="M8 12h.01"></path>
+                <path d="M16 12h.01"></path>
+              </svg>
+            </a>
+            <a class="social-link" href="#" aria-label="给昊白发送邮件" title="邮箱">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 HAOBAI</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const header = document.querySelector("#site-header");
+      const navLinks = [...document.querySelectorAll(".nav-link")];
+      const sections = navLinks
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+      const revealItems = document.querySelectorAll(".reveal");
+      const toast = document.querySelector("#toast");
+      let toastTimer;
+
+      const updateHeader = () => {
+        header.classList.toggle("scrolled", window.scrollY > 12);
+      };
+
+      updateHeader();
+      window.addEventListener("scroll", updateHeader, { passive: true });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            navLinks.forEach((link) => {
+              const isActive = link.getAttribute("href") === `#${entry.target.id}`;
+              link.classList.toggle("active", isActive);
+              if (isActive) {
+                link.setAttribute("aria-current", "page");
+              } else {
+                link.removeAttribute("aria-current");
+              }
+            });
+          });
+        },
+        {
+          rootMargin: "-35% 0px -55% 0px",
+          threshold: 0
+        }
+      );
+
+      sections.forEach((section) => observer.observe(section));
+
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver(
+          (entries, currentObserver) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("visible");
+              currentObserver.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12 }
+        );
+
+        revealItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add("visible"));
+      }
+
+      document.querySelectorAll(".social-link").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          if (link.getAttribute("href") !== "#") return;
+
+          event.preventDefault();
+          const name = link.getAttribute("aria-label").replace(/^访问我的|^添加我的|^给昊白发送/, "");
+          toast.textContent = `${name}链接暂未设置，可在 HTML 中替换 #`;
+          toast.classList.add("show");
+          window.clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
